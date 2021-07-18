@@ -9,7 +9,7 @@ const ToDoItem = ({ code, text, timeout, callback }) => {
       clearTimeout(timeoutFunc);
     };
   }, [text, code, timeout, callback]);
-  return <div>{text}</div>;
+  return <h2>{text}</h2>;
 };
 
 export default ToDoItem;

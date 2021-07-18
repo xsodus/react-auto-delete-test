@@ -3,14 +3,14 @@ import React, { useState, useRef } from "react";
 import ToDoItem from "./ToDoItem";
 
 export default function App() {
-  let [toDoList, setToDoList] = useState([]);
+  const [toDoList, setToDoList] = useState([]);
 
   // Use this variable in the callback function because the state does not update synchronously.
   const rawToDoList = useRef([]);
 
   const removeToDoItem = (code) => {
     // We can simply remove it by rawToDoList.current.shift();
-    // but it is not good solotion for the future case
+    // but it is not a good solotion for the future case
     // because we may delete it at wrong index if the timeout is dynamic value.
     // So, I changed the logic to remove at its index instead.
     rawToDoList.current = rawToDoList.current.filter(
@@ -44,7 +44,7 @@ export default function App() {
         }}
       >
         <input type="text" name="todo" />
-        <button type="submit">Submit</button>
+        <button type="submit">Enter</button>
         {toDoList.map((item) => {
           return item.component;
         })}
