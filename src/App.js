@@ -8,8 +8,14 @@ export default function App() {
   // Use this variable in the callback function because the state does not update synchronously.
   const rawToDoList = useRef([]);
 
-  const removeTheOldestItemFromDoList = () => {
-    rawToDoList.current.shift();
+  const removeToDoItem = (code) => {
+    // We can simply remove it by rawToDoList.current.shift();
+    // but it is not good solotion for the future case
+    // because we may delete it at wrong index if the timeout is dynamic value.
+    // So, I changed the logic to remove at its index instead.
+    rawToDoList.current = rawToDoList.current.filter(
+      (item) => item.code !== code
+    );
     setToDoList([...rawToDoList.current]);
   };
 
@@ -21,20 +27,27 @@ export default function App() {
           event.preventDefault();
           const toDoSubject = event.target[0].value;
           if (!toDoSubject) return;
-          rawToDoList.current.push(
-            <ToDoItem
-              key={`todo-${new Date().getTime()}`}
-              text={toDoSubject}
-              timeout={5000}
-              callback={removeTheOldestItemFromDoList}
-            />
-          );
+          const key = `todo-${new Date().getTime()}`;
+          rawToDoList.current.push({
+            code: key,
+            component: (
+              <ToDoItem
+                key={key}
+                code={key}
+                text={toDoSubject}
+                timeout={5000}
+                callback={removeToDoItem}
+              />
+            )
+          });
           setToDoList([...rawToDoList.current]);
         }}
       >
         <input type="text" name="todo" />
         <button type="submit">Submit</button>
-        {toDoList}
+        {toDoList.map((item) => {
+          return item.component;
+        })}
       </form>
     </div>
   );

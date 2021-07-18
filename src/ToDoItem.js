@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 
-const ToDoItem = ({ text, timeout, callback }) => {
+const ToDoItem = ({ code, text, timeout, callback }) => {
   useEffect(() => {
-    const timeoutFunc = setTimeout(callback, timeout);
+    const timeoutFunc = setTimeout(() => {
+      callback(code);
+    }, timeout);
     return () => {
       clearTimeout(timeoutFunc);
     };
-  }, [text, timeout, callback]);
+  }, [text, code, timeout, callback]);
   return <div>{text}</div>;
 };
 
